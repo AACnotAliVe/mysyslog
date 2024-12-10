@@ -34,6 +34,6 @@ deb: all
 	echo "Maintainer: AACnotAliVe <mrlenorgenri@gmail.com>" >> $(DEB_DIR)/DEBIAN/control
 	echo "Depends: libmysyslog" >> $(DEB_DIR)/DEBIAN/control
 	echo "Description: JSON format driver for mysyslog" >> $(DEB_DIR)/DEBIAN/control
-	cp $(TARGET) $(DEB_DIR)/usr/lib/
+	cp $(LIB_SHARED) $(DEB_DIR)/usr/lib/
 	dpkg-deb --build $(DEB_DIR)
 	rm -r $(DEB_DIR)

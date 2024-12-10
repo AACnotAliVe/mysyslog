@@ -11,6 +11,8 @@ Create mysyslog-daemon .cfg file
 Create mysyslog-daemon.service
     sudo nano /etc/systemd/system/mysyslog-daemon.service
 
+Way config/mysyslog.config
+
 Daemon control
     sudo systemctl daemon-reload
     sudo systemctl enable mysyslog-daemon

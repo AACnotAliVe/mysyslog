@@ -7,6 +7,8 @@ SRC = src/mysyslog-daemon.c
 OBJ = $(SRC:.c=.o)
 DEB_DIR = mysyslog-daemon_deb
 
+CONFIG_FILE = /home/astra/Desktop/mysyslog/config/mysyslog.cfg
+
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
@@ -30,7 +32,7 @@ deb: all
 	echo "Depends: libmysyslog" >> $(DEB_DIR)/DEBIAN/control
 	echo "Description: A daemon for the mysyslog" >> $(DEB_DIR)/DEBIAN/control
 	cp $(TARGET) $(DEB_DIR)/usr/bin/
-	cp config/mysyslog.cfg $(DEB_DIR)/etc/mysyslog/
+	cp $(CONFIG_FILE) $(DEB_DIR)/etc/mysyslog/
 	dpkg-deb --build $(DEB_DIR)
 	rm -r $(DEB_DIR)
 

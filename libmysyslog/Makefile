@@ -34,6 +34,6 @@ deb: all
 	echo "Architecture: amd64" >> $(DEB_DIR)/DEBIAN/control
 	echo "Maintainer: AACnotAliVe <mrlenorgenri@gmail.com>" >> $(DEB_DIR)/DEBIAN/control
 	echo "Description: Logging library for mysyslog" >> $(DEB_DIR)/DEBIAN/control
-	cp $(TARGET) $(DEB_DIR)/usr/lib/
+	cp $(LIB_SHARED) $(DEB_DIR)/usr/lib/
 	dpkg-deb --build $(DEB_DIR)
 	rm -r $(DEB_DIR)

@@ -1,23 +1,34 @@
-DEB_DIR = repo
-PACKAGES = libmysyslog libmysyslog-json libmysyslog-text mysyslog-client mysyslog-daemon mysyslog-meta
+.PHONY: all clean deb repo
 
-.PHONY: all clean repo $(PACKAGES)
+SUBDIRS = libmysyslog libmysyslog-text libmysyslog-json mysyslog-client mysyslog-daemon mysyslog-meta
 
-all: $(PACKAGES)
+REPO_DIR = repo
+PACKAGES_DIR = $(REPO_DIR)/packages
 
-$(PACKAGES):
-	$(MAKE) -C $@
+all:
+	@echo "Сборка всех подпроектов..."
+	for dir in $(SUBDIRS); do \
+		$(MAKE) -C $$dir all || exit 1; \
+	done
 
 clean:
-	for pkg in $(PACKAGES); do \
-		$(MAKE) -C $$pkg clean; \
+	@echo "Очистка всех подпроектов..."
+	for dir in $(SUBDIRS); do \
+		$(MAKE) -C $$dir clean || exit 1; \
 	done
-	rm -rf $(DEB_DIR)
+	rm -rf $(REPO_DIR)
 
-repo: all
-	mkdir -p $(DEB_DIR)
-	for pkg in $(PACKAGES); do \
-		cp $$pkg/*.deb $(DEB_DIR); \
+deb:
+	@echo "Создание deb-пакетов для всех подпроектов..."
+	for dir in $(SUBDIRS); do \
+		$(MAKE) -C $$dir deb || exit 1; \
 	done
-	dpkg-scanpackages $(DEB_DIR) /dev/null | gzip -9c > $(DEB_DIR)/Packages.gz
 
+repo: deb
+	@echo "Формирование репозитория..."
+	mkdir -p $(PACKAGES_DIR)
+	for dir in $(SUBDIRS); do \
+		cp $$dir/*.deb $(PACKAGES_DIR) || exit 1; \
+	done
+	cd $(PACKAGES_DIR) && dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
+	@echo "Репозиторий сформирован в $(REPO_DIR)"
