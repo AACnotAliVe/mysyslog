@@ -22,7 +22,7 @@ $(LIB_STATIC): $(OBJ)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJ) $(TARGET)
+	rm -f $(LIB_SHARED) $(LIB_STATIC) $(OBJ)
 	rm -f *.deb
 
 deb: all
